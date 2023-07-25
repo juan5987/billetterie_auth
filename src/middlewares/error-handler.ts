@@ -10,18 +10,12 @@ export const errorHandler = (
     ) => {
 
         if (err instanceof RequestValidationError) {
-            const formattedErrors = err.errors.map((error) => {
-              if (error.type === 'field') {
-                return { message: error.msg, field: error.path };
-              }
-            });
-            return res.status(400).send({ errors: formattedErrors });
+            return res.status(400).send({ errors: err.serializeErrors()});
           }
 
         if(err instanceof DatabaseConnectionError){
             return res.status(500).send({
-                errors: [{ message: err.reason }]
-            });
+                errors: err.serializeErrors()});
         }
 
     res.status(400).send({
