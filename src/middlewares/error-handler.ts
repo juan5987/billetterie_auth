@@ -10,6 +10,6 @@ export const errorHandler = (
     console.log('Une erreur est survenue ', err);
 
     res.status(400).send({
-        message: 'Une erreur est survenue'
+        message: err.message
     });
 }
