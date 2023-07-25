@@ -4,7 +4,7 @@ export abstract class CustomError extends Error {
     constructor(message: string) {
         super(message);
 
-        // car nous étendons une classe native de Node
+        // établissement du prototype de l'instance de CustomError pour qu'elle hérite des méthodes de CustomError et de Error
         Object.setPrototypeOf(this, CustomError.prototype);
     }
 
