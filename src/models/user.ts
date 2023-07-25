@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Password } from '../services/password';
 
 interface UserAttributes {
     email: string;
@@ -17,7 +18,7 @@ interface UserDoc extends mongoose.Document {
 }
 
 const userSchema = new mongoose.Schema({
-    email: {    
+    email: {
         type: String,
         required: true
     },
@@ -25,6 +26,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+});
+
+// Avant de sauvegarder le document, on hash le mot de passe
+userSchema.pre('save', async function (done) {
+    // On vérifie que le mot de passe a été modifié pour éviter de le hasher à chaque fois qu'on sauvegarde le document
+    // par exemple quand on met à jour l'email sans changer le mot de passe
+    if (this.isModified('password')) {
+        const hashed = await Password.toHash(this.get('password'));
+        this.set('password', hashed);
+    }
+    done();
 });
 
 // Une fonction qui permet à TypeScript de vérifier que nous créons un nouvel utilisateur avec les bons attributs
