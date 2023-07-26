@@ -12,7 +12,7 @@ import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found-error';
 
 const app = express();
-// Pour que express fasse confiance à nginx
+// Pour que express fasse confiance à nginx et qu'il sache qu'il est derrière un proxy
 app.set('trust proxy', true);
 app.use(json());
 app.use(
