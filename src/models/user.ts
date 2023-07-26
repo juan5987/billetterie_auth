@@ -26,7 +26,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+},
+    // On peut utiliser toJSON pour modifier la réponse JSON qui est renvoyée par mongoose
+    {
+        toJSON: {
+            transform(doc, ret) {
+                // On modifie l'objet ret qui est la réponse JSON
+                ret.id = ret._id;
+                delete ret._id;
+                delete ret.password;
+                delete ret.__v;
+            }
+        }
+    }
+);
 
 // Avant de sauvegarder le document, on hash le mot de passe
 userSchema.pre('save', async function (done) {
