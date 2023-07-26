@@ -18,8 +18,8 @@ app.use(
     cookieSession({
         // pas besoin de chiffré car le JWT sera chiffré
         signed: false,
-        // https uniquement
-        secure: true
+        // https uniquement quand on est en prod
+        secure: process.env.NODE_ENV !== 'test'
     })
 )
 
